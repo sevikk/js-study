@@ -1,0 +1,2 @@
+Don`t debug promise with console.log, use instead of this catch or then;
+or use try catch

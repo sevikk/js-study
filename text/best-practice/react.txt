@@ -1,0 +1,113 @@
+1. Extensions: Use .jsx extension for React components.
+
+-----------------------------------
+
+2. Reference Naming: Use PascalCase for React components and camelCase for their instances. eslint: react/jsx-pascal-case
+
+// good
+const reservationItem = <ReservationCard />;
+
+-----------------------------------------
+
+3. Props Naming: Avoid using DOM component prop names for different purposes.
+
+Why? People expect props like style and className to mean one specific thing. 
+Varying this API for a subset of your app makes the code less readable and less maintainable, and may cause bugs.
+
+// bad
+<MyComponent style="fancy" />
+
+// good
+<MyComponent variant="fancy" />
+
+----------------------------------------------
+
+4. Follow these alignment styles for JSX syntax.
+
+// bad
+<Foo superLongParam="bar"
+     anotherSuperLongParam="baz" />
+
+// good
+<Foo
+  superLongParam="bar"
+  anotherSuperLongParam="baz"
+/>
+
+---------------------------------------------------
+
+5. Avoid using an array index as key prop, prefer a unique ID. (why?)
+
+// bad
+{todos.map((todo, index) =>
+  <Todo
+    {...todo}
+    key={index}
+  />
+)}
+
+// good
+{todos.map(todo => (
+  <Todo
+    {...todo}
+    key={todo.id}
+  />
+))}
+
+-----------------------------------------------------
+
+6. Always use ref callbacks. eslint: react/no-string-refs
+
+// bad
+<Foo
+  ref="myRef"
+/>
+
+// good
+<Foo
+  ref={(ref) => { this.myRef = ref; }}
+/>
+
+---------------------------------------------------
+
+7. sWrap JSX tags in parentheses when they span more than one line. eslint: react/jsx-wrap-multilines
+
+// bad
+render() {
+  return <MyComponent variant="long body" foo="bar">
+           <MyChild />
+         </MyComponent>;
+}
+
+// good
+render() {
+  return (
+    <MyComponent variant="long body" foo="bar">
+      <MyChild />
+    </MyComponent>
+  );
+}
+
+// good, when single line
+render() {
+  const body = <div>hello</div>;
+  return <MyComponent>{body}</MyComponent>;
+}
+
+-------------------------------------------------------
+
+8. Ordering for class extends React.Component:
+optional static methods
+constructor
+getChildContext
+componentWillMount
+componentDidMount
+componentWillReceiveProps
+shouldComponentUpdate
+componentWillUpdate
+componentDidUpdate
+componentWillUnmount
+clickHandlers or eventHandlers like onClickSubmit() or onChangeDescription()
+getter methods for render like getSelectReason() or getFooterContent()
+optional render methods like renderNavigation() or renderProfilePicture()
+render

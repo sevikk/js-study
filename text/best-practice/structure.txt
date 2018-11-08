@@ -1,0 +1,726 @@
+1.
+-------------------------------------------------------
+
+Bad: setTimeout(blastOff, 86400000);
+Good:
+const MILLISECONDS_IN_A_DAY = 86400000;
+setTimeout(blastOff, MILLISECONDS_IN_A_DAY);
+-------------------------------------------------------
+
+2.
+-------------------------------------------------------
+
+Bad:  car.carColor = 'Red';
+Good: car.color = 'Red';
+-------------------------------------------------------
+
+3.
+-------------------------------------------------------
+
+------------------------------------------------
+
+Bad: const createMicrobrewery = name =>  const breweryName = name || 'Hipster Brew Co.';
+Good: const createMicrobrewery = (breweryName = 'Hipster Brew Co.') => {}
+
+4.
+-------------------------------------------------------------
+
+Encapsulate conditionals
+
+Bad: if (fsm.state === 'fetching') {}
+Good:
+const shouldShowSpinner (fsm, listNode) => fsm.state === 'fetching';
+if (shouldShowSpinner(fsmInstance, listNodeInstance)) {}
+
+5. Avoid negative conditionals
+
+--------------------------------------------------------------
+
+6. Function must do one thing
+
+--------------------------------------------------------------
+
+7. Don't use flags as function parameters
+--------------------------------------------------------------
+
+Bad:
+
+function createFile(name, temp) {
+  if (temp) {
+    fs.create(`./temp/${name}`);
+  } else {
+    fs.create(name);
+  }
+}
+
+->
+
+Good:
+
+function createFile(name) {
+  fs.create(name);
+}
+
+function createTempFile(name) {
+  createFile(`./temp/${name}`);
+}
+
+--------------------------------------------------------------
+
+8. Неплохо было бы взять за правило сохранять внешние значения в локальных переменных:
+
+Доступ к пере­менной doc выполняется быстрее, чем к переменной document, потому что она является локальной переменной
+
+document.getElementById("go-btn")
+
+->
+
+var doc = document;
+doc.getElementByld('go-btn')
+
+--------------------------------------------------------------
+
+9. Mark optional parameters via the parameter default value `undefined`
+
+function foo(optional = undefined) { ··· }
+
+--------------------------------------------------------------
+
+10. Mark required parameters via a function that throws an exception
+
+function foo(required = throwException()) { ··· }
+
+--------------------------------------------------------------
+
+11. Enforcing a maximum arity (variant 1 of 2)
+
+  function f(x, y, ...empty) { // max arity: 2
+      if (empty.length > 0) {
+          throw new Error();
+      }
+  }
+
+--------------------------------------------------------------
+
+12. Normalize variable
+
+const hasEitherClass = (element, classNamel, className2) =>
+   element.className == classNamel || element.className == className2;
+
+
+->
+
+const hasEitherClass = (element, classNamel, className2) => {
+    const currentClassName = element.className;
+    return currentClassName == classNamel || currentClassName == className2;
+};
+
+--------------------------------------------------------------
+
+13. refactoring
+
+  const getItem = () => {
+    const item = myStorage.getItem('customKey');
+    console.log(item);
+  };
+
+  takeItem.onclick = () => getItem();
+
+  ->
+
+  const getItem = () => myStorage.getItem('customKey');
+
+  takeItem.onclick = () => {
+    const item = getItem();
+    console.log(item);
+  }
+
+--------------------------------------------------------------  
+
+14. Для parseInt всегда определять систему исчесления
+
+--------------------------------------------------------------
+
+15. Для функции конструктора используются заглавные буквы
+
+--------------------------------------------------------------
+
+16. cache:
+
+-> const len = arr.lenght
+
+   for(cont i =0; i < len)
+
+--------------------------------------------------------------   
+
+17. 
+
+function makeRegexParser(regex) {
+    return regex.exec;
+}
+var parseSsn = makeRegexParser(/^\d{3}-\d{2}-\d{4}$/);
+var parsePhone = makeRegexParser(/^\(\d{3}\)\d{3}-\d{4}$/);
+
+//instead
+
+var parseSsn = /^\d{3}-\d{2}-\d{4}$/.exec;
+var parsePhone = /^\(\d{3}\)\d{3}-\d{4}$/.exec; 
+
+--------------------------------------------------------------
+
+18. 
+
+// bad
+function moreThanThree(number){
+  if(number > 3){
+  return true;
+  } else {
+  return "No. The number was only " + number + ".";
+  }
+};
+
+// good
+function moreThanThree(number){
+  if(number > 3){
+  return true;
+  } else {
+  return false;
+  }
+};
+
+
+This function returns either a boolean or a string (see Figure 5-10). This isn’t
+great because code that calls this function will likely have its own conditionals
+to check for which type was returned.
+
+--------------------------------------------------------------
+
+19. 
+
+Do-Nothing Code
+Moving on to do-nothing code, we have an example of this in our file. The conditional
+check that follows contains an unnecessary part:
+
+if(!!(Object.keys(labelCounts).includes(label))){
+
+->
+
+if(Object.keys(labelCounts).includes(label)){
+
+-------------------------------------------------------------
+
+20. 
+
+DUPLICATION IN CONDITIONALS: ANOTHER TYPE OF USELESS CODE
+
+if(dog.weight > 40){
+ buyFood('big bag');
+ dog.feed();
+}
+else{
+ buyFood('small bag');
+ dog.feed();
+}
+
+-> 
+
+if(dog.weight > 40){
+ buyFood('big bag');
+}
+else{
+ buyFood('small bag');
+}
+
+dog.feed();
+
+-------------------------------------------------------------
+
+21.
+
+Long Lines:
+
+probabilityOfChordsInLabels[difficulty][chord] = probabilityOfChords (line continues...)
+
+->
+
+var chordInstances = probabilityOfChordsInLabels[difficulty][chord];
+chordInstances = probabilityOfChords ... 
+
+-----------------------------------------------------------------
+
+22.
+
+Inlining Function Calls
+
+function getNumberOfSongs(){
+ return songs.length;
+};
+
+ var numberOfSongs = getNumberOfSongs();
+ labelProbabilities[label] = labelCounts[label] / numberOfSongs;
+
+->
+
+ var numberOfSongs = songs.length;
+ labelProbabilities[label] = labelCounts[label] / numberOfSongs;
+
+----------------------------------------------------------------
+
+23. 
+
+// bad
+const legthOfArray = array.length; // this case don`t need explanation
+
+//good
+const isWidthResizeable = width !== null; // but this need
+
+----------------------------------------------------------------
+
+24. Methods can return this to help with method chaining.
+
+// bad
+Jedi.prototype.jump = function () {
+  this.jumping = true;
+  return true;
+};
+
+Jedi.prototype.setHeight = function (height) {
+  this.height = height;
+};
+
+const luke = new Jedi();
+luke.jump(); // => true
+luke.setHeight(20); // => undefined
+
+// good
+class Jedi {
+  jump() {
+    this.jumping = true;
+    return this;
+  }
+
+  setHeight(height) {
+    this.height = height;
+    return this;
+  }
+}
+
+const luke = new Jedi();
+
+luke.jump()
+  .setHeight(20);
+
+----------------------------------------------------------
+
+25. Do not use wildcard imports.
+
+Why? This makes sure you have a single default export.
+
+// bad
+import * as AirbnbStyleGuide from './AirbnbStyleGuide';
+
+// good
+import AirbnbStyleGuide from './AirbnbStyleGuide';  
+
+-----------------------------------------------------------
+
+26. And do not export directly from an import.
+
+Why? Although the one-liner is concise, having one clear way to import and one clear way to export makes things consistent.
+
+// bad
+// filename es6.js
+export { es6 as default } from './AirbnbStyleGuide';
+
+// good
+// filename es6.js
+import { es6 } from './AirbnbStyleGuide';
+export default es6;
+
+-----------------------------------------------------------
+
+27. Only import from a path in one place. eslint: no-duplicate-imports
+
+Why? Having multiple lines that import from the same path can make code harder to maintain.
+
+// bad
+import foo from 'foo';
+// … some other imports … //
+import { named1, named2 } from 'foo';
+
+// good
+import foo, { named1, named2 } from 'foo';
+
+// good
+import foo, {
+  named1,
+  named2,
+} from 'foo';
+
+------------------------------------------------------------------
+
+28. In modules with a single export, prefer default export over named export. eslint: import/prefer-default-export
+
+Why? To encourage more files that only ever export one thing, which is better for readability and maintainability.
+
+// bad
+export function foo() {}
+
+// good
+export default function foo() {}
+
+---------------------------------------------
+
+29. Multiline imports should be indented just like multiline array and object literals.
+
+Why? The curly braces follow the same indentation rules as every other curly brace block in the style guide, as do the trailing commas.
+
+// bad
+import {longNameA, longNameB, longNameC, longNameD, longNameE} from 'path';
+
+// good
+import {
+  longNameA,
+  longNameB,
+  longNameC,
+  longNameD,
+  longNameE,
+} from 'path';
+
+---------------------------------------------
+
+30. Use one const or let declaration per variable. eslint: one-var
+
+Why? It’s easier to add new variable declarations this way, and you never have to worry about swapping out a ; for a , or introducing punctuation-only diffs. You can also step through each declaration with the debugger, instead of jumping through all of them at once.
+
+// bad
+const items = getItems(),
+    goSportsTeam = true,
+    dragonball = 'z';
+
+// bad
+// (compare to above, and try to spot the mistake)
+const items = getItems(),
+    goSportsTeam = true;
+    dragonball = 'z';
+
+// good
+const items = getItems();
+const goSportsTeam = true;
+const dragonball = 'z';
+
+---------------------------------------------
+
+31. Avoid using unary increments and decrements (++, --). eslint no-plusplus
+
+Why? Per the eslint documentation, unary increment and decrement statements are subject to 
+automatic semicolon insertion and can cause silent errors with incrementing or decrementing 
+values within an application. It is also more expressive to mutate your values with statements 
+like num += 1 instead of num++ or num ++. Disallowing unary increment and decrement statements 
+also prevents you from pre-incrementing/pre-decrementing values unintentionally which can 
+also cause unexpected behavior in your programs.
+
+--------------------------------------------------
+
+32. Avoid unneeded ternary statements. eslint: no-unneeded-ternary
+
+// bad
+const foo = a ? a : b;
+const bar = c ? true : false;
+const baz = c ? false : true;
+
+// good
+const foo = a || b;
+const bar = !!c;
+const baz = !c;
+
+--------------------------------------------------
+
+33. start all comments with a space to make it easier to read. eslint: spaced-comment
+
+---------------------------------------------------
+
+34. Do not pad your blocks with blank lines. eslint: padded-blocks
+
+// bad
+function bar() {
+
+  console.log(foo);
+
+}
+
+// good
+function bar() {
+  console.log(foo);
+}
+
+---------------------------------------
+
+35. Do not add spaces inside parentheses. eslint: space-in-parens
+
+// bad
+function bar( foo ) {
+  return foo;
+}
+
+// good
+if (foo) {
+  console.log(foo);
+}
+
+---------------------------------------
+
+36. Add spaces inside curly braces. eslint: object-curly-spacing
+
+// bad
+const foo = {clark: 'kent'};
+
+// good
+const foo = { clark: 'kent' };
+
+---------------------------------------
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+37. Do not use trailing or leading underscores. eslint: no-underscore-dangle
+
+Why? JavaScript does not have the concept of privacy in terms of properties or methods. Although a leading underscore is a common convention to mean “private”, in fact, these properties are fully public, and as such, are part of your public API contract. This convention might lead developers to wrongly think that a change won’t count as breaking, or that tests aren’t needed. tl;dr: if you want something to be “private”, it must not be observably present.
+
+// bad
+this.__firstName__ = 'Panda';
+this.firstName_ = 'Panda';
+this._firstName = 'Panda';
+
+// good
+this.firstName = 'Panda';
+
+// good, in environments where WeakMaps are available
+// see https://kangax.github.io/compat-table/es6/#test-WeakMap
+const firstNames = new WeakMap();
+firstNames.set(this, 'Panda');
+
+---------------------------------------
+
+38. A base filename should exactly match the name of its default export.
+
+39. 
+var siteUrl = "http://refactoringjs.com";
+$('.my-button').on('click', function(){
+ window.location = siteUrl;
+});
+$('.other-button').on('click', function(){
+ window.location = siteUrl;
+});
+
+This does make it easier to change siteUrl in the future (assuming it is
+used in other places), but we can reduce duplication further by extracting a
+function:
+
+var siteUrl = "http://refactoringjs.com";
+function visitSite(){
+ window.location = siteUrl;
+}
+$('.my-button').on('click', visitSite);
+$('.other-button').on('click', visitSite);
+
+----------------------------------------------------
+
+// Function callers and callees should be close
+
+Bad:
+
+class PerformanceReview {
+    constructor(employee) {
+        this.employee = employee;
+    }
+
+    lookupPeers() {
+        return db.lookup(this.employee, 'peers');
+    }
+
+    lookupManager() {
+        return db.lookup(this.employee, 'manager');
+    }
+
+    getPeerReviews() {
+        const peers = this.lookupPeers();
+        // ...
+    }
+
+    perfReview() {
+        this.getPeerReviews();
+        this.getManagerReview();
+        this.getSelfReview();
+    }
+
+    getManagerReview() {
+        const manager = this.lookupManager();
+    }
+
+    getSelfReview() {
+        // ...
+    }
+}
+
+const review = new PerformanceReview(employee);
+review.perfReview();
+
+Good:
+
+class PerformanceReview {
+    constructor(employee) {
+        this.employee = employee;
+    }
+
+    perfReview() {
+        this.getPeerReviews();
+        this.getManagerReview();
+        this.getSelfReview();
+    }
+
+    getPeerReviews() {
+        const peers = this.lookupPeers();
+        // ...
+    }
+
+    lookupPeers() {
+        return db.lookup(this.employee, 'peers');
+    }
+
+    getManagerReview() {
+        const manager = this.lookupManager();
+    }
+
+    lookupManager() {
+        return db.lookup(this.employee, 'manager');
+    }
+
+    getSelfReview() {
+        // ...
+    }
+}
+
+const review = new PerformanceReview(employee);
+review.perfReview();
+
+/* ---------------------------------------------------- */
+
+// I/O functions should have failure cases handled
+
+// Any function that does I/O should handle when something goes wrong
+
+function getIngredientsFromFile() {
+    const onFulfilled = (buffer) => {
+        let lines = buffer.split('\n');
+        return lines.forEach(line => <Ingredient ingredient={line} />)
+    };
+
+    // What about when this rejected because of an error? What do we return?
+    return readFile('./ingredients.txt').then(onFulfilled);
+}
+
+/* ---------------------------------------------------- */
+
+// User input should be limited
+
+/* 
+Users can potentially input an unlimited amount of data to send to you. It's important to set limits 
+if a function takes any kind of user data in.
+*/
+
+router.route('/message').post((req, res) => {
+    const message = req.body.content;
+
+    // What happens if the message is many megabytes of data? Do we want to store
+    // that in the database? We should set limits on the size.
+    db.save(message);
+});
+
+/*------------------------------------------------------------*/
+
+// XSS should not be possible
+
+/* 
+Cross-site scripting (XSS), is one of the largest vectors for security attacks on a web application. 
+It occurs when you take user data and include it in your page without first properly sanitizing it. 
+This can cause your site to execute source code from remote pages.
+*/
+
+function () {
+  let badge = document.getElementsByClassName('badge');
+  let nameQueryParam = getQueryParams('name');
+
+  /**
+    * What if nameQueryParam was `<script>sendCookie(document.cookie)</script>`?
+    * If that was the query param, a malicious user could lure a user to click a
+    * link with that as the `name` query param, and have the user unknowingly
+    * send their data to a bad actor.
+    */
+  badge.children[0].innerHTML = nameQueryParam;
+}
+
+
+
+/*-----------------------------------------------------------*/
+
+tableColumns.length > 0 -> tableColumns.length 
+
+---------------------------------------------------------------
+
+
+        // good
+        let node;
+        if (this.props.columnTreeNode) {
+            node = this.props.dataNode;
+        } else if (this.props.treeNode) {
+            node = this.props.treeNode;
+        }
+
+        const isCellSelected = node && node.state && node.state.selected;
+
+
+        // bad
+        const isCellSelected =
+            (this.props.treeNode && this.props.treeNode.state && this.props.treeNode.state.selected) ||
+            (this.props.dataNode && this.props.dataNode.state && this.props.dataNode.state.selected);
+
+-----------------------------------------------------
+
+columnTreeNode.userType === 'subTotal' || rowTreeNode.userType === 'subTotal'
+
+->
+
+(columnTreeNode.userType || rowTreeNode.userType) === 'subTotal';
+
+--------------------------------------------------------
+
+    isSubTotals({
+        rowTreeNode, userType, dataNode,
+    }) {
+        const isDataCell = (typeof rowTreeNode !== 'undefined');
+        if (isDataCell) {
+            return userType === 'subTotal';
+        }
+
+        if (!isDataCell) {
+            return dataNode.userType === 'subTotal';
+        }
+    }   
+
+
+-----------------------------------------------------
+
+  const db = {
+	data: 'some data',
+};
+
+const getData = (db) => {
+	const changedData = db.data + ' with some changes';
+  
+  return () => {
+  	console.log('write this data to fs ->', changedData)
+  }
+};
+
+const writeChangedDataToFs = getData(db);
+
+writeChangedDataToFs();

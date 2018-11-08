@@ -1,0 +1,8 @@
+/*
+
+    Wrap your console.log arguments in an object literal to print the variable name along with its value.
+
+    console.log(isLoggedIn) 
+    console.log({ isLoggedIn })
+
+*/
