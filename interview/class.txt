@@ -1,0 +1,128 @@
+class Super {
+	helloSuper() {
+  	console.log("hello from super");
+  }
+}
+
+class Child extends Super {
+	helloChild() {
+  	console.log("hello from child");
+  }
+}
+
+const obj = new Child();
+
+obj.hellosuper(); //  конструктор вызывается под капотом с методом супер
+
+-------------------------------------------
+
+Можно ли у класса переопределять метод
+
+Менять методы класса невозможно возможно только для его прототипа
+
+class Person {
+	constructor(name) {
+  	this.name = name;
+  }
+	getName() {
+  	console.log(this.name);
+  }
+}
+
+const person = new Person("Yura");
+
+// меняем метод у прототипа
+Person.prototype.sayHello = () => console.log("hello");
+Person.sayBy = () => console.log("by");
+
+// доступно в person потому что та наследуется от прототипа
+person.sayHello()
+
+-------------------------------------------
+
+class A extends null {}
+
+new A(); //Uncaught TypeError: Super constructor null of A is not a constructor
+
+-------------------------------------
+
+function Person (name) {
+  if (name) { 
+    this.options.name = name;
+  }
+};
+
+Person.prototype.options = {
+  name: 'Default name'
+};
+
+var foo = new Person('foo');
+var bar = new Person('bar');
+
+console.log(foo.options.name); // bar
+console.log(bar.options.name); // bar
+
+// потому что не находит options и берет их у портотипа и просто перезаписывает на последний инстанс
+
+function Person (name) {
+  if (name) { 
+    this.name = name;
+  }
+};
+
+Person.prototype.options = {
+  name: 'Default name'
+};
+
+var foo = new Person('foo');
+var bar = new Person('bar');
+
+console.log(foo.name); // foo
+console.log(bar.name); // bar
+
+----------------------------------------
+
+__proto__ - это ссылка на родительский объект
+
+у функции есть свойство prototype которое ссылается на почти пустой объект у него
+есть __proto__ и конструктор и когда мы у такой функции вызывае new то она вызывает 
+конструктор этого объекта
+когда мы вызываем функцию с new она создает новый объект this. = {}, вызывается сама функция и возвращает this
+// this.__proto__ = f.prototype
+
+----------------------------------------
+
+function User() { }
+User.prototype = { admin: false };
+
+let user = new User();
+console.log(user.admin); // false, beacuse object
+
+------------------------------------------------------
+
+function User() { }
+User.prototype = { admin: false };
+
+let user = new User();
+
+User.prototype = { admin: true };
+
+console.log(user.admin); // false, because code is sync
+
+-----------------------------------------------------------------------
+
+Как вызвать метод родителя из ребенка -> super().say()
+
+---------------------------------------------------------------
+
+class Car {
+	drive() {
+  	console.log('car is drive');
+  }
+}
+
+class Porshe extends Car {
+	drive() {
+  	console.log('porshe is drive');
+  }
+}

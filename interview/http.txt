@@ -1,0 +1,119 @@
+“What happens when you type something into the Google search box and press enter?”.
+
+1. When you enter the URL and press enter, the browser first builds the full URL.
+2. The browser starts the DNS lookup to get the server IP address.
+  - First, it checks the DNS local cache, to see if the domain has already been resolved recently. (chrome://net-internals/#dns -> medium.com	IPV4	104.16.121.127);
+  - If nothing is found there, the browser uses the DNS resolver, using the gethostbyname POSIX system call to retrieve the host information
+    - gethostbyname
+        gethostbyname first looks in the local hosts file, which on macOS or Linux is located in /etc/hosts, to see if the system provides the information locally.
+        If this does not give any information about the domain, the system makes a request to the DNS server.
+        
+        The address of the DNS server is stored in the system preferences.
+
+        Those are 2 popular DNS servers:
+
+        8.8.8.8: the Google public DNS server
+        1.1.1.1: the CloudFlare DNS server
+
+        The browser performs the DNS request using the UDP protocol.
+
+        TCP and UDP are two of the foundational protocols of computer networking. They sit at the same conceptual level, 
+        but TCP is connection-oriented, while UDP is a connectionless protocol, more lightweight, used to send messages with little overhead.
+
+        What it knows is where the top-level DNS resolvers are.
+
+A top-level domain is the domain extension: .com, .it, .pizza and so on.
+
+Once the root DNS server receives the request, it forwards the request to that top-level domain (TLD) DNS server.
+
+Say you are looking for flaviocopes.com. The root domain DNS server returns the IP of the .com TLD server.
+
+Now our DNS resolver will cache the IP of that TLD server, so it does not have to ask the root DNS server again for it.
+
+The TLD DNS server will have the IP addresses of the authoritative Name Servers for the domain we are looking for
+
+2. TCP request handshaking
+With the server IP address available, now the browser can initiate a TCP connection to that.
+
+A TCP connection requires a bit of handshaking before it can be fully initialized and you can start sending data.
+
+Once the connection is established, we can send the request
+
+3. Sending the request
+The request is a plain text document structured in a precise way determined by the communication protocol.
+
+It’s composed of 3 parts:
+
+the request line
+the request header
+the request body
+
+Sending the request
+The request is a plain text document structured in a precise way determined by the communication protocol.
+
+It’s composed of 3 parts:
+
+the request line
+the request header
+the request body
+The request line
+The request line sets, on a single line:
+
+the HTTP method
+the resource location
+the protocol version
+Example:
+
+GET / HTTP/1.1
+The request header
+The request header is a set of field: value pairs that set certain values.
+
+There are 2 mandatory fields, one of which is Host, and the other is Connection, while all the other fields are optional:
+
+Host: flaviocopes.com
+Connection: close
+Host indicates the domain name which we want to target, while Connection is always set to close unless the connection must be kept open.
+
+Some of the most used header fields are:
+
+Origin
+Accept
+Accept-Encoding
+Cookie
+Cache-Control
+Dnt
+but many more exist.
+
+The header part is terminated by a blank line.
+
+The request body
+The request body is optional, not used in GET requests but very much used in POST requests and sometimes in other verbs too, and it can contain data in JSON format.
+
+Since we’re now analyzing a GET request, the body is blank and we’ll not look more into it.
+
+The response
+Once the request is sent, the server processes it and sends back a response.
+
+The response starts with the status code and the status message. If the request is successful and returns a 200, it will start with:
+
+200 OK
+The request might return a different status code and message, like one of these:
+
+404 Not Found
+403 Forbidden
+301 Moved Permanently
+500 Internal Server Error
+304 Not Modified
+401 Unauthorized
+The response then contains a list of HTTP headers and the response body (which, since we’re making the request in the browser, is going to be HTML).
+
+Parse the HTML
+The browser now has received the HTML and starts to parse it, and will repeat the exact same process we did not for all the resources required by the page:
+
+CSS files
+images
+the favicon
+JavaScript files
+…
+How browsers render the page then is out of the scope, but it’s important to understand that the process I described is not just for the HTML pages, but for any item that’s served over HTTP.
+

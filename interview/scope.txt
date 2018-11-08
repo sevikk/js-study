@@ -1,0 +1,65 @@
+(function() {
+   var a = b = 5;
+})();
+ 
+console.log(b); // 5, cause b was in global scope
+if was var b = 5; - we got b - is not defined 
+
+----------------------------------------------------
+
+var i = 0;
+
+function f() {
+	### var i = undefined; // потому что c hoisting var вспывет ннаверх
+	console.log(i); // выведет undefined
+  	var i = 1; // и потом присвоит i
+}
+
+f(); // undefined
+
+---------------------------------------------------------
+
+let i = 0;
+
+function f() {
+	console.log(i); // i is not defined
+    let i = 1;
+}
+
+f();
+
+-------------------------------------------------------
+
+  (function f(f) {
+    console.log(typeof f()); // undefined, because lost context
+  })(function() {
+    return 1;
+  });
+
+--------------------------------------------------
+
+// because var has global scope, and cycle add function from setTimout in queue and
+// when we get this frunction from queue and use console.log var i is 10
+
+// for resolve this problem we need or block scope with let or clousers
+// is case with closures when we inc=voke callback function var i in this function has closered and we will see right values
+
+// alse you can use iife pattern is will be the same as clouser
+
+const showValue = (i) => () => console.log(i);
+
+for(var i = 0; i < 10; i++) {
+	setTimeout(() => console.log(i), 1000); // 10
+}
+
+for(var i = 0; i < 10; i++) {
+	setTimeout(showValue(i), 1000); // 1 ... 9
+}
+
+// or you can use
+
+for (var i = 0; i < 9; i++) {
+ setTimeout((i) => {
+   console.log(i);
+  }, 1000, i);
+}

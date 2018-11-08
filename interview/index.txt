@@ -1,0 +1,328 @@
+
+
+Garbage collector:
+
+Для очистки памяти от недостижимых значений используется автоматический Сборщик мусора, 
+который наблюдает за объектами и время от времени удаляет недостижимые.
+
+Самая простая ситуация здесь с примитивами. При присвоении они копируются целиком, 
+ссылок на них не создаётся, так что если в переменной была одна строка,
+а её заменили на другую, то предыдущую можно смело выбросить.
+
+была создана ссылка в переменной, и эту переменную тут же перезаписали:
+
+var user = {
+  name: "Вася"
+};
+user = null;
+
+Теперь объект { name: "Вася" } более недоступен. Память будет освобождена.
+
+--------------------------------------------------------
+
+Js question:
+Можно ли из js менять значения в before, after?
+
+Ответ
+Нет, единственное что мы можем — это удалить класс, у которого указаны before или after, либо наоборот добавить.
+
+-----------------------------------------------
+
+Decorator - это как функция обертка которая может принимать в себя функцию и изменять ее поведение или класс и менять его свойства
+
+Fasad - это абстрактный класс за которым скрывается реализация общих методов
+
+Strategy - функция принимает аргументы в зависимости от которых меняет свое поведение, на пример мы можем первым аргументом передать функцию которая будет выводить следующие аргументы в консоль или другую функцию которая будет выводить их на экран, вообщем в зависимости от переданных функция меняется стратегия поведение главной функции
+
+Factory - это класс который в зависимости от аргументы создает различные объекты
+
+-----------------------------------------------------
+
+unit tests -> must to be isolated (for this tou can use mock data)
+
+---------------------------------------------
+
+Ассоциация – это когда один класс включает в себя другой класс в качестве одного из полей. Ассоциация описывается словом «имеет».
+Композиция – это когда двигатель не существует отдельно от автомобиля. Он создается при создании автомобиля и полностью управляется автомобилем. В типичном примере, экземпляр двигателя будет создаваться в конструкторе автомобиля. 
+Агрегация – это когда экземпляр двигателя создается где-то в другом месте кода, и передается в конструктор автомобиля в качестве параметра. 
+
+
+--------------------------------------------------
+
+create error in js and try catch
+
+const some = (n) => {
+	if(n > 10) throw new Error("n must be less than 10");
+  
+  return n + 1;
+};
+
+try {
+	console.log(some(11));
+}
+catch(e) {
+	console.log('you got an error ->', e);
+}
+
+------------------------------------------------
+
+uncauth error if in code js can`t finde try catch for processing error
+
+--------------------------------------------------------
+
+что будет если в одном из запросов произойдет ошибка, довыполнится ли цепочка?
+
+Нет
+
+------------------------------------------------
+
+//1. equals of arrays
+
+//console.log([] == ![]); //true, cause ![] -> false, []->false
+
+//2.// true is 'truthy' and represented by value 1 (number), 'true' in string form is NaN.
+//console.log(true == 'true')    // -> false
+//console.log(false == 'false')  // -> false
+//3. Number.MIN_VALUE > 0
+//4.[1, 2, 3] + [4, 5, 6] // -> '1,2,34,5,6'
+//[1, 2, 3].toString() + [4, 5, 6].toString()
+
+
+------------------------------------
+
+Understanding JavaScript: New Keyword
+
+There are a few steps that the constructor call goes through, but we’ll focus only on those that matter for the current discussion:
+
+A new object is created
+this is bound to the new object
+Unless the function returns its own object, the call will return the constructed object
+
+----------------------------------------
+
+alert("Привет!");        // "Привет!"
+alert(void "Привет!");   // undefined
+
+-----------------------------------------
+
+
+for(var i = 0; i < 10; i++) {
+  //console.log(i);
+}
+
+console.log(i); // if var will be 10, if let will be error (not defined)
+
+if var:
+
+We have this global variable that has leaked into the window, or into a parent scope which is not something we necessarily want. It’s just a placeholder value that we need to work inside of this loop.
+
+if let: 
+let? It’s block-scoped. We have curly brackets in the for loop. If you run it now, after a second we’ll log zero through nine. We’re not getting 10, 10 times. We getting it as it was declared each and every time.
+
+-------------------------------------------
+
+replace two variables
+
+let a = 5;
+let b = 4;
+
+[a, b] = [b, a];
+
+------------------------------------------
+
+const a = b = c = 1;
+console.log(b)
+каскадное присваивание
+
+-----------------------------------------
+
+const getNumbersSum = number =>
+  nextNumber => {
+    const isNextNumberExist = typeof nextNumber !== 'undefined';
+
+    if (isNextNumberExist) {
+      const reduceNumber = number + nextNumber;
+      return getNumbersSum(reduceNumber);
+    }
+
+    return number;
+
+  }
+
+const numbersSum = getNumbersSum(2)(3)(6)(8)();
+console.log(numbersSum); // -> 19
+
+
+-----------------------------------------
+
+const array = [1, 2, 3, 4, 1, 2, 3, 4, 3, 5, 5];
+
+const sortedArray = array.sort();
+
+for(let i = 0; i < sortedArray.length; i++) {
+	if(sortedArray[i] === sortedArray[i + 1]) {
+  	sortedArray[i] = null;
+    sortedArray[i + 1] = null;
+  }
+  
+}
+
+const arr = sortedArray.filter((n) => n != null);
+
+
+
+console.log(arr)
+
+-------------------------------------
+
+На собеседованиях иногда просят\
+назвать способы отправки запроса на сервер. 
+Помимо очевидных fetch/XMLHttpRequest и прочих 
+джаваскриптовых штук есть более экзотические способы вроде <img src="...">.
+
+ещё более экзотическом и извращённом способе отправки запроса на сервер с помощью CSS:
+
+
+body::after {
+  content: url('...');
+}
+
+-------------------------------------
+
+console.log({} + []); -> [object Object] // because operator '+' here is contatination string
+
+----------------------------------------
+
+Can you explain undefined and null
+
+undefined is missing value
+null is empty value
+
+----------------------------------------
+
+Question #1: Event delegation
+
+document.addEventListener('DOMContentLoaded', function() {
+  
+  let app = document.getElementById('todo-app');
+  let items = app.getElementsByClassName('item');
+  
+  // attach event listener to each item
+  for (let item of items) {
+    item.addEventListener('click', function() {
+      alert('you clicked on item: ' + item.innerHTML);
+    });
+  }
+  
+});
+
+instead of this
+
+document.addEventListener('DOMContentLoaded', function() {
+  
+  let app = document.getElementById('todo-app');
+  
+  // attach event listener to whole container
+  app.addEventListener('click', function(e) {
+    if (e.target && e.target.nodeName === 'LI') {
+      let item = e.target;
+      alert('you clicked on item: ' + item.innerHTML);
+    }
+  });
+  
+});
+
+While this does technically work, the problem is that you’re attaching an event listener to 
+every single item individually. This is fine for 4 elements, but what if someone adds 10,000 items 
+(they may have a lot of things to do) to their todo list?
+
+----------------------------------------
+
+Never Declare Number, String, or Boolean Objects
+Always treat numbers, strings, or booleans as primitive values. Not as objects.
+
+Declaring these types as objects, slows down execution speed, and produces nasty side effects:
+
+-----------------------------------------
+
+for (let i = 0; i < 100; i++) {
+	if(i % 5) {
+  	console.log('foobaz');
+  } else if (i % 3) {
+  	console.log('baz');
+  } else if (i % 5 && i % 3) {
+  	console.log('foo')
+  }
+}
+
+---------------------------------------------
+
+class Nodes {
+	constructor(left, right) {
+  	this.left = left;
+    this.right = right;
+  }
+  
+  getCountOfNodes() {
+  	if (this.right && this.left) {
+    	return 2;
+    } else if (this.right || this.left) {
+    	return 1;
+    }
+    return 0;
+  }
+}
+
+const nodes = new Nodes();
+
+--------------------------------------------------------
+
+console.log("1"[0]) // get value from array
+
+------------------------------------------------------------------
+
+for(var i=0; i<10; i++) {
+  console.log(i); // 10
+}
+
+for(let i=0; i<10; i++) {
+  console.log(i); // 9
+}
+
+------------------------------------------------------------------
+
+let a = (1,5 - 1) * 2; // 8 потому что запятая
+
+alert(a);
+
+
+-----------------------------------------------------------------------
+
+
+где бы вы не использовали редакс?
+
+- на маленьком поректе
+- на проекте со большими объектами и затратами по памяти из за иммутабильности
+- можно щаменить новым конкест апи
+
+-----------------------------------------------------
+
+console.log(Math.max());
+
+If no arguments are given, the result is -Infinity.
+
+var arr = [1,2,3];
+var max = arr.reduce(function(a, b) {
+    return Math.max(a, b);
+});
+
+function getMaxOfArray(numArray) {
+  return Math.max.apply(null, numArray);
+}
+
+var arr = [1, 2, 3];
+var max = Math.max(...arr);
+
+----------------------------------------------------------
+
+

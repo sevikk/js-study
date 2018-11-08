@@ -1,0 +1,123 @@
+const a = [Array(100)].map((i, index) => i);
+console.log(a[0]) 
+
+-> 
+When you create a new array with the Array constructor, it creates a new array object with its length property 
+set to the value you passed in, but otherwise the object is a vacuum. There are no index keys 
+in the object representation of the array whatsoever.
+
+{
+  //no index keys!
+  length: 100
+}
+
+-> Solution
+
+const arr = [...Array(100)].map((_, i) => i);
+
+-------------------------------------------
+
+const result = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+ .filter(int => isEven(int));
+
+ -> 
+
+const result = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+ .filter(isEven);
+
+ -------------------------------------
+
+ const init = [1, 2, 3]; -> const double = [1, 2, 3];
+
+const double = Array.from(init, item => item * 2);
+const double = Array.map(item => item * 2);
+cycle for, while
+for in -> if order items == hash number
+iterators
+
+-----------------------------------------
+
+ ‘return’ doesn’t stop looping
+
+array = [1, 2, 3, 4];
+array.forEach(function (element) {
+  console.log(element);
+  
+  if (element === 2) 
+    return;
+  
+});
+// Output: 1 2 3 4
+
+------------------------------------------------------
+
+const x = [1, 2, 3];
+
+x[-1] = -1;
+
+console.log(x[x.indexOf(10000)]); // because x.indexOf(10000) return -1, and then we get by this key -1 value -1
+
+--------------------------------------------------------------------
+
+function MyArray() { }
+MyArray.prototype = [];
+
+let arr = new MyArray();
+arr.push(1, 2, 3);
+console.log(arr.length); // because in array prototype we assign array
+
+------------------------------------------------------------
+
+let a = new Array(1,2), b = new Array(3);
+
+console.log(a[0] + b[0]); // NaN, because new Array(3) create only new empty array
+
+----------------------------------------------------------------------------
+
+const array = [1, 15, 3, 4, 2];
+
+array.sort(); // [1, 15, 2, 3, 4]
+
+By default, the sort() function sorts values as strings.
+
+This works well for strings ("Apple" comes before "Banana").
+
+Because of this, the sort() method will produce incorrect result when sorting numbers.
+
+You can fix this by providing a compare function
+
+array.sort(function(a, b){return a - b});
+
+---------------------------------------------------------------
+
+method slice:
+
+1. Simple copy
+
+const arr2 = arr.slice();
+
+Slice without any arguments performs a simple shallow copy.
+
+2. Working With Array-like Objects
+
+Array.prototype.slice.call(arguments);
+
+---------------------------------------------------------------
+
+let x = [1, 2, 3] + [4, 5, 6]; // '1, 2, 34, 5, 6';
+
+-----------------------------------------------------------------
+
+const filter = (array, change) => {
+  const filtered = array.filter(({
+    age
+  }) => age === change);
+  
+  const arrays = [...new Set(filtered.map(({
+      age,
+      name,
+      surname
+    }) =>
+    `{"age": ${age}, "fullName": "${name} ${surname}"}`))];
+  return JSON.parse(arrays);
+};

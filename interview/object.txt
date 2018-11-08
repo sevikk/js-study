@@ -1,0 +1,164 @@
+That comparison by reference basically checks to see if the objects given refer to the same location in memory
+
+console.log(bobaFett == jangoFett);
+// Outputs: false
+
+-----------------------------------------------
+
+Object.entries()
+
+Метод Object.entries() возвращает, массив, 
+содержащий массивы, представляющие собой пары вида [ключ, значение];
+
+const weather = {
+  rain: 0,
+  temperature: 24,
+  humidity: 33,
+}
+
+const entries = Object.entries(weather); // [['rain', 0], ['temperature', 24], ['humidity', 33]];
+
+---------------------------------------------------
+
+Object.freeze()
+
+Метод Object.freeze() «замораживает» объект, предотвращая изменение существующих свойств этого объекта или добавление новых свойств и значений в объект.
+
+const frozenObject = {
+  name: 'Robert'
+}
+
+Object.freeze(frozenObject);
+
+frozenObject.name = 'Henry'; // объект frozenObject не изменится, он сохранится в виде { name: 'Robert' }
+
+--------------------------------------------------------
+
+Object.seal()
+
+Метод Object.seal() позволяет «запечатать» объект, предотвратив добавление новых свойств. При этом существующие свойства можно менять.
+
+const sealedObject = {
+  name: 'Robert'
+}
+
+Object.seal(sealedObject);
+
+sealedObject.name = 'Bob';
+sealedObject.wearsWatch = true; // объект sealedObject будет выглядеть так: { name: 'Bob' }
+
+----------------------------------------------------------
+
+const test = {
+    age: 42
+};
+Object.preventExtensions(test);
+test.name = 5;
+
+console.log(test); // undefined
+
+---------------------------------------------
+
+inheritance es5
+
+const a = {
+	name: "name"
+}
+
+
+const b = Object.create(a)
+
+console.dir(b.name)
+console.log(b.hasOwnProperty(b.name)) - false
+
+----------------------------------------------
+
+let str = "Hello";
+str.something = 5;
+console.log(str.something); // undefined
+
+---------------------------------------------------------------------
+
+let obj = {'1': 0, 1: 1, 0: 2};
+
+console.log(obj['1']); // 1, get last item
+
+----------------------------------------------------------------
+
+ (function(x){
+    delete x;
+    return x; // 1, because The JavaScript delete operator removes a property from an object
+  })(1);
+
+---------------------------------------------------------------------------------
+
+Правда ли, что при переборе for(key in codes) ключи key будут перечислены именно в том порядке, в котором заданы?
+
+По стандарту – нет. Но некоторое соглашение об этом, всё же, есть.
+
+Соглашение говорит, что если имя свойства – нечисловая строка, то такие ключи всегда перебираются в том же порядке, в каком присваивались. Так получилось по историческим причинам и изменить это сложно: поломается много готового кода.
+
+for(let key in  {1:1, 0:0}) {
+ alert(key);
+}
+
+--------------------------------------------------------------------------------
+
+if (function f(){}) {
+  alert(typeof f); // потому что на f никто не ссылается и она удаляется из паммяти
+}
+
+---------------------------------------------------------------------------
+
+how to define some unchangeble properties in the object
+
+- with Object.defineProperty function
+
+--------------------------------------------------------
+
+function changeObject(object) {
+	// object = obj; -> beacuse we write into object link to obj? and we change only new object
+  // object.value = 5; -> but it will be work because we get link to our object and change it
+	object = {
+  	value: 'changed',
+  };
+}
+
+let obj = {
+	value: 'not changed',
+};
+
+changeObject(obj);
+console.log(obj); // not changed
+
+---------------------------------------
+
+const a = {};
+const b = {
+  'value': 0
+};
+const c = {
+  'value': 0
+};
+
+a[b] = 789;
+a[c] = 456;
+
+console.log(a[b]);
+
+------------------------------------------
+
+function changeObject(object) {
+	// object = obj; -> beacuse we write into object link to obj? and we change only new object
+  // object.value = 5; -> but it will be work because we get link to our object and change it
+	object = {
+  	value: 'changed',
+  };
+}
+
+let obj = {
+	value: 'not changed',
+};
+
+changeObject(obj);
+console.log(obj); // not changed

@@ -1,0 +1,2 @@
+1. cluster and coversation beetwen master and slave process
+2. The most significant difference between spawn and exec is in what they return - spawn returns a stream and exec returns a buffer.

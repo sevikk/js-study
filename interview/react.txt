@@ -1,0 +1,976 @@
+
+Монтирование компоненты 
+
+constructor
+componentWillMount
+render
+componentDidMount
+
+Обновление компоненты 
+
+compoentWillReceiveProps
+shouldComponentUpdate
+componentWillUpdate
+render
+componentDidUpdate
+
+Удаление компоненты 
+componentWillUnmoun
+
+
+------------------------------------------------
+
+
+1. What happens when you call setState?
+
+Во-первых, если был вызван setState, то React захочет объединить объект,
+   который вы отправили в setState с текущим состоянием компонента.
+   - Это позволит начать процесс согласования. (rerendering)
+
+   Для этого React сформирует новое дерево элементов. (создает новый объект)
+   React сравнит новое дерево с предыдущим деревом элементов. (сравнивает два объекта)
+
+   Зная эти изменения, React получит возможность провести изменения в интерфейсе только там,
+   где это необходимо и этим минимизировать количество изменений.
+
+2. Какая разница между Элементом и Компонентом в React?
+
+   - Компонент в React является функцией или классом,
+     который при необходимости принимает данные и возвращает элемент
+     (обычно в виде JSX, который преобразуется в вызов createElement)
+
+3. When would you use a Class Component over a Functional Component?
+
+    If your component has state or a lifecycle method(s), use a Class component.
+    Otherwise, use a Functional component.
+
+4. What are refs in React and why are they important?
+
+   - Refs allow you to get direct access to a DOM element or an instance of a component.
+   - It’s often misconstrued that you need to use a class component in order to use refs,
+     but refs can also be used with functional components by leveraging closures in JavaScript.
+
+
+     const App = () => {
+       let inputElement;
+
+       return (
+       <div style={styles}>
+           <input
+             type='text'
+             ref={(input) => inputElement = input} />
+         <button onClick={() => console.log(inputElement.value)}>button</button>
+       </div>
+     )};
+
+5. What are keys in React and why are they important?
+
+   - Keys are what help React keep track of what items have changed,
+     been added, or been removed from a list.
+
+   - React can use the key on a child element to quickly know
+     if an element is new or if it was just moved when comparing trees.
+
+6. What is the difference between a controlled component and an uncontrolled component?
+
+   - controlled component has own state;
+
+7. In which lifecycle event do you make AJAX requests and why?
+
+   You can’t guarantee the AJAX request won’t resolve before the component mounts.
+   If it did, that would mean that you’d be trying to setState on an unmounted component,
+   which not only won’t work, but React will yell at you for.
+   Doing AJAX in componentDidMount will guarantee that there’s a component to update.
+
+8. shouldComponentUpdate does is it’s a lifecycle method that allows us to opt out
+   of this reconciliation process for certain components (and their child components).
+
+    “The end goal of reconciliation is to, in the most efficient way possible,
+     update the UI based on new state”
+
+9. How do you tell React to build in Production mode and what will that do?
+
+   - Typically you’d use Webpack’s DefinePlugin method to set NODE_ENV to production.
+   - This will strip out things like propType validation and extra warnings.
+   - it’s also a good idea to minify your code because React uses Uglify’s dead-code elimination
+
+10. Why would you use
+    React.Children.map(props.children, () => )
+    instead of props.children.map(() => )
+
+    - It’s not guaranteed that props.children will be an array.
+
+11. Describe how events are handled in React.
+
+    - In order to solve cross browser compatibility issues, your event handlers in React will be passed instances of SyntheticEvent
+      which is React’s cross-browser wrapper around the browser’s native event.
+
+    - React will listen to all events at the top level using a single event listener.
+
+12. В чем разница между createElement и cloneElement?
+
+    - createElement мы получаем из JSX и его React использует для создания элементов
+    - cloneElement используется для клонирования элемента и отправить ему новые параметры.
+
+13. What is the second argument that can optionally be passed to setState and what is its purpose?
+
+    - A callback function which will be invoked when setState has finished and the component is re-rendered.
+
+14. Что вы можете рассказать о JSX
+
+    - В то же время, когда Facebook впервые выпустил React, был представлен новый диалект JavaScript под названием JSX
+    - JSX-код сам по себе не может быть прочитан браузером: он должен быть переведен в традиционный JavaScript
+      с использованием таких инструментов, как Babel и webpack.
+
+15. Мгновенно ли срабатывает setState? no
+16. Что будет если вызвать this.setState в render методе компонента?
+    - Maximum update depth exceeded
+
+17. Как организовать роутинг в реакт приложении?
+    (ответ: взять react-router - подходит, но было бы круто, если бы вы рассказали, как он примерно работает)*
+    - а рабатает он на history api
+
+18. Зачем нужны propTypes? Что происходит с ними в production сборке?
+    - in production mode warnings from props removed
+
+19. Как можно удобно "отлаживать" код приложения?
+    - React devtools
+
+20. What are the features of React?
+
+    - It uses the virtual DOM instead of the real DOM.
+    - It uses server-side rendering.
+    - It follows uni-directional data flow or data binding.
+
+21. What do you understand by Virtual DOM?
+
+    - A virtual DOM is a lightweight JavaScript object which originally is just the copy of the real DOM.
+
+22. Real DOM:
+
+    - It updates slow.
+    - Can directly update HTML.
+    - Creates a new DOM if element updates.
+    - DOM manipulation is very expensive.
+    - Too much of memory wastage.
+
+23. Explain the purpose of render() in React.
+    - Each React component must have a render() mandatorily.
+     It returns a single React element which is the representation of the native DOM component.
+
+24. What is Props?
+    - Props are short hand for Properties in React.
+    - They are always passed down from the parent to the child components through out the application.
+    - A child component can never send a prop back to the parent component.
+      This help in maintaining the unidirectional data flow
+
+25. How can you update the state of a component?
+    - State of a component can be updated using this.setState().
+
+26. Explain the lifecycle methods of React components in detail.
+
+    componentWillMount() – Executed just before rendering takes place both on the client as well as server-side.
+    componentDidMount() – Executed on the client side only after the first render.
+    componentWillReceiveProps() – Invoked as soon as the props are received from the parent class and before another render is called.
+    shouldComponentUpdate() – Returns true or false value based on certain conditions. If you want your component to update, return true else return false. By default, it returns false.
+    componentWillUpdate() – Called just before rendering takes place in the DOM.
+    componentDidUpdate() – Called immediately after rendering takes place.
+    componentWillUnmount() – Called after the component is unmounted from the DOM. It is used to clear up the memory spaces.
+
+27. What do you understand by refs in React?
+
+    - Refs is the short hand for References in React. It is an attribute which helps to store a reference to a particular React element or component
+
+28. Controlled vs Uncontrolled Components
+
+Controlled Components ->
+
+1. They do not maintain their own state
+2. Data is controlled by the parent component
+3. They take in the current values through props and then notify the changes via callbacks
+
+Uncontrolled Components ->
+
+1. They maintain their own state
+2. Data is controlled by the DOM
+3. Refs are used to get their current values
+
+29. What can you do with HOC?
+
+    HOC can be used for many tasks like:
+
+    Code reuse, logic and bootstrap abstraction
+    Render High jacking
+    State abstraction and manipulation
+    Props manipulation
+
+30. What is the difference between a Presentational component and a Container component?
+
+    - Presentational components are concerned with how things look. They generally receive data and callbacks exclusively via props.
+    - Container components are more concerned with how things work. These components provide the data and behavior to presentational or other container components.
+
+31. What are the differences between a class component and functional component?
+    - Class components allows you to use additional features such as local state and lifecycle hooks
+
+32. Where in a React component should you make an AJAX request?
+
+    - componentDidMount is where an AJAX request should be made in a React component.
+    - Making your AJAX request in componentDidMount will guarantee that there’s a component to update.
+
+33. Why is it advised to pass a callback function to setState as opposed to an object?
+
+    - Because this.props and this.state may be updated asynchronously,
+     you should not rely on their values for calculating the next state.
+
+34. What is the alternative of binding this in the constructor?
+
+    You can use property initializers to correctly bind callbacks.
+    This is enabled by default in create react app. you can use an arrow function in the callback.
+    The problem here is that a new callback is created each time the component renders.
+
+35. When rendering a list what is a key and what is it's purpose?
+
+    Keys help React identify which items have changed;
+
+36. What is the purpose of super(props)?
+
+    - A child class constructor cannot make use of this until super() has been called.
+     Also, ES2015 class constructors have to call super() if they are subclasses.
+     The reason for passing props to super() is to enable you to access this.props in the constructor.
+
+37. React API children:
+
+    - These include React.Children.map,
+     React.Children.forEach, React.Children.count, React.Children.only, React.Children.toArray.
+
+38. What is the difference between using constructor vs getInitialState in React?
+    - The two approaches are not interchangeable.
+      You should initialize state in the constructor when using ES6 classes, and define the getInitialState method when using React.createClass.
+
+
+
+1. JSX is an Expression Too
+
+so you can add jsx to variable
+const element = <div tabIndex="0"></div>;
+-----------------------------------------
+
+2. React DOM uses camelCase property naming
+
+so class becomes className
+--------------------------------------------
+
+3. If a tag is empty, you may close it immediately with />, like XML:
+
+<Tag />;
+-----------------------------------------------------------------------
+
+4. JSX Prevents Injection Attacks
+
+const title = response.potentiallyMaliciousInput;
+// This is safe:
+const element = <h1>{title}</h1>;
+
+-------------------------------------------------
+
+5. JSX Represents Objects
+
+so
+
+const element = (
+  <h1 className="greeting">
+    Hello, world!
+  </h1>
+);
+
+to be
+
+const element = React.createElement(
+  'h1',
+  {className: 'greeting'},
+  'Hello, world!'
+);
+-----------------------------------------------------------------------
+
+6.React.createElement() - create an object
+
+Like this
+
+const element = {
+  type: 'h1',
+  props: {
+    className: 'greeting',
+    children: 'Hello, world'
+  }
+};
+
+-------------------------------------------------------
+
+7. if you use typescript -> remove babel
+
+------------------------------------------------
+
+8. Always start component names with a capital letter.
+
+For example, <div /> represents a DOM tag, but <Welcome />
+
+--------------------------------------------------
+
+9. Props are Read-Only
+
+---------------------------------------------
+
+10.
+// Wrong
+this.setState({
+  counter: this.state.counter + this.props.increment,
+});
+
+// Correct
+this.setState((prevState, props) => ({
+  counter: prevState.counter + props.increment
+}));
+
+--------------------------------------------
+
+11.String Literals
+
+<MyComponent message="hello world" />
+
+<MyComponent message={'hello world'} />
+
+--------------------------------------------
+
+12.Props Default to “True”
+
+If you pass no value for a prop, it defaults to true. These two JSX expressions are equivalent:
+
+<MyTextBox autocomplete />
+
+<MyTextBox autocomplete={true} />
+
+--------------------------------------
+
+!13. use this
+
+function App2() {
+  const props = {firstName: 'Ben', lastName: 'Hector'};
+  return <Greeting {...props} />;
+}
+
+not this
+
+<Greeting firstName='Ben' />;
+
+-------------------------------------------
+
+14.
+
+const Button = props => {
+  const { kind, ...other } = props;
+  const className = kind === "primary" ? "PrimaryButton" : "SecondaryButton";
+  return <button className={className} {...other} />;
+};
+
+--------------------------------------------
+
+!15. Children in JSX
+
+In JSX expressions that contain both an opening tag and a closing tag,
+the content between those tags is passed as a special prop: props.children
+
+-----------------------------------------------
+
+16.
+
+Booleans, Null, and Undefined Are Ignored
+false, null, undefined, and true are valid children. They simply don’t render. These JSX expressions will all render to the same thing:
+
+<div />
+
+<div></div>
+
+<div>{false}</div>
+
+<div>{null}</div>
+
+<div>{undefined}</div>
+
+<div>{true}</div>
+
+This can be useful to conditionally render React elements. This JSX only renders a <Header /> if showHeader is true:
+
+<div>
+  {showHeader && <Header />}
+  <Content />
+</div>
+
+
+----------------------------------------------
+
+react async
+- Using Redux-Observables
+- Using Redux-Saga
+- Using Redux Thunk
+
+------------------------------------------------
+
+1.  customClick (name) {
+    return name;
+  }
+
+return value in react in temlapte
+
+<button>{this.customClick('args')}</button>
+
+2. constructor() {
+    super();
+    this.name = 'name';
+  }
+
+{this.name}
+
+3. в реакте мы не можем использлвать выражение if но можем использовать ?:
+
+7. merge array
+
+const array = [0];
+const newarray = [1,2,5,6];
+const replaceArray = [...array, ...newarray];
+
+console.log(replaceArray) => [0,1,2,5,6]
+
+8. babel node server
+9. test serber side react
+10. крест с символм %time
+11. change to new Regex();
+12. create react app
+13. jest test for react например чтобы в цикле были элемены
+14. либы для стиле в рекате
+15. next.js, saga
+16. './' такой путь в ректе указывется для вебпака
+17. ключ в реакте должен быть уникальным а напрмер индекс будует тормозить поомучто то если измениться один индекис то нужно менять и другие
+18. mongodb использует bson
+19. use short commands ng generate -> ng g;
+20. ng new --style - change style
+	   --prefix -
+	   --reouting - create router
+21. ng set - change global settings for cli
+22. ng lint --fix - fix smal buds for example " to '
+23. coockie and ession
+
+
+1. revesed list
+
+<ol start='2' reversed>
+<li>Coffee</li>
+<li>Tea</li>
+<li>Milk</li>
+</ol>
+
+->
+
+2.Coffee
+1.Tea
+0.Milk
+
+2. The <!DOCTYPE> declaration is not an HTML tag; it is an instruction to the web browser about what version of HTML the page is written in.
+
+3. <a href="javascript:alert('Hello World!');">Execute JavaScript</a>
+
+4.
+<img src="planets.gif" width="145" height="126" alt="Planets"
+usemap="#planetmap">
+<map name="planetmap">
+  <area shape="rect" coords="0,0,82,126" href="sun.htm" alt="Sun">
+  <area shape="circle" coords="90,58,3" href="mercur.htm" alt="Mercury">
+  <area shape="circle" coords="124,58,8" href="venus.htm" alt="Venus">
+</map>
+
+5.<base> - Specify a default URL and a default target for all links on a page:
+
+6.
+
+refactor promise to async:
+
+module for async fs -> const as = require('await-fs');
+
+  promise ->
+
+	const html = template(data);
+    const result = minify(html, settings);
+    fs.writeFile(output, result, () => {
+          console.log('html minified!');
+    });
+
+async ->
+
+  static async createAsync(data) {
+    const html = template(data);
+    const minifiedHtml = minify(html, settings);
+    const writeMinifyHtml = await as.writeFile(output, minifiedHtml);
+  }
+
+7. if you want inport files like this
+import {Publishers, Properties, Users, Accounts} from './data/controllers/';
+
+you must create index js and there past next code:
+
+import Publishers from './publisher';
+import Properties from './properties';
+import Users from './users';
+import Accounts from './accounts';
+
+export {
+  Publishers,
+  Properties,
+  Users,
+  Accounts
+}
+
+8.
+const existsAsync = (path) => {
+  return new Promise( resolve => {
+    fs.exists(path, resolve);
+  });
+};
+
+-------------------------------
+
+реакт сначала вызывает жизненнеы функции и потом фекцию рендер
+перерендер вызывается при setState, forceUpdate
+делать прверку действительно изменился ли стейт и поверять изменились ли пропсы - это можно провеить в функции shouldComponentUpdate
+для спсиков создавать отдельный компонент, чтобы этот списко не заносился в объект реакта
+jsx - переходит в функцию reactCrateElelemnt
+если изменяем рутовый узел в реакте меняются и childrens
+коментарии вреакте как разделение вместо span
+
+--------------------------
+
+конструктор всегда вызывается при создании класса
+нельзя вызывать стаические методы у экземлярова класса, только у самого класаа
+через сеттер мы можем проверить ккие данные приходият в нащ клас
+методы подкласса можно перезеаписывать
+под класс при наследовании наследует все свойтва и мтоды родителя
+метод родительского класса можно расширять в подклассе
+отличе классов выражений в том что при наследовани у них родитель главный объект а не главный класс
+напсиать рефакторинг на проверку ошибоку что сначала проверяем ошибку если она есть то вызываем ретерн
+
+async функция возвращает promise
+если ассинхроанная функция возвращает обещание, то она не оборчивает объект в promise
+await можно вызывать только внутри асинхронной функции
+awit можно использовать чтобы вернуть результат промиса не только асинхронной функции
+
+чтобы выкуинуть ошибку использовать объект new Error
+
+лучше использовать компоненты без солстояний
+
+
+
+1. что такое pure components
+2. как начать разрабытывать на реакт native
+3. apollo
+4. ref в реакт
+5. Transferring props <VideoEmbed {...this.props} />
+6. https://reactjs.org/docs/react-api.html
+7. https://reactjs.org/docs/dom-elements.html
+8. react portals
+9. react hydrate
+10. bindactioncreators
+11. события в функциональной компоненте
+12.best practice по sendfile path
+
+-----------------------------
+
+Short-circuit evaluation
+
+<div>
+  {showPopup && <Popup />}
+</div>
+
+New features
+-Returning fragments
+render () {
+  // Don't forget the keys!
+  return [
+    <li key="A">First item</li>,
+    <li key="B">Second item</li>
+  ]
+}
+
+
+-------------------------------
+
+window.document возвращает объект типа html
+
+function speak (message) {
+
+var msg = new SpeechSynthesisUtterance(message)
+
+var voices = window.speechSynthesis.getVoices()
+
+msg.voice = voices[0]
+
+window.speechSynthesis.speak(msg)
+
+}
+
+speak('hello world')
+
+----------------------------
+
+reducer  берет текущее состояние и action и возвращает новое
+also you can create middleware -> crate function where describe what you want to do and then with fucntion applyMiddleware ad your function
+
+--------------------------------------
+               this.setState(previousState => {
+                              return { ...previousState, dropdown: !this.state.dropdown, };
+                            });
+
+
+-----------------------------
+
+safari and nitro has the same engine JavaScriptCore?
+
+--------------------------------
+
+что вызывает перерендер у реакта
+
+1. forceUpodate
+2. setState
+3. рендкр родителя
+обработка ошибок в ноде
+
+
+--------------------------------------------------------------------------
+
+Using Dot Notation for JSX Type
+You can also refer to a React component using dot-notation from within JSX. This is convenient if you have a single module that exports many React components. For example, if MyComponents.DatePicker is a component, you can use it directly from JSX with:
+
+import React from 'react';
+
+const MyComponents = {
+  DatePicker: function DatePicker(props) {
+    return <div>Imagine a {props.color} datepicker here.</div>;
+  }
+}
+
+function BlueDatePicker() {
+  return <MyComponents.DatePicker color="blue" />;
+}
+
+------------------------------------------------------------------
+
+Choosing the Type at Runtime
+
+function Story(props) {
+  // Wrong! JSX type can't be an expression.
+  return <components[props.storyType] story={props.story} />;
+}
+
+function Story(props) {
+  // Correct! JSX type can be a capitalized variable.
+  const SpecificStory = components[props.storyType];
+  return <SpecificStory story={props.story} />;
+}
+
+
+~~~~~~~~
+
+const me = Object.freeze({name: “Jacopo”})
+me.age = 28
+console.log(me.age) // виведе undefined
+
+------------------------------------------------------------------
+
+1. return plain text
+
+    Old:
+
+    const Old = () => <span>text</span>;
+
+    New:
+
+    const New = () => text;
+
+2. Return elements with arrays:
+
+   const New => [
+        <span>text</span>,
+        <span>text</span>
+   ];
+
+3. Fragments:
+
+    const New = () =>
+        <Fragment>
+            <span>text</span>
+            <span>text</span>
+        </Fragment>;
+
+4. Call setState with null to Avoid Triggering an Update
+5. Portals:
+
+    {ReactDOM.createPortal(
+      <div>Portal</div>,
+      document.getElementById('portal-container')
+    )}
+
+--------------------------------------------------
+
+/* beat repeat components to small chunk */
+
+- // Dirty
+const MyComponent = () => (
+  <div>
+    <OtherComponent type="a" className="colorful" foo={123} bar={456} />
+    <OtherComponent type="b" className="colorful" foo={123} bar={456} />
+  </div>
+);
+
+// Clean
+const MyOtherComponent = ({ type }) => (
+  <OtherComponent type={type} className="colorful" foo={123} bar={456} />
+);
+const MyComponent = () => (
+  <div>
+    <MyOtherComponent type="a" />
+    <MyOtherComponent type="b" />
+  </div>
+);
+
+-----------------------------------------------------------------------------
+
+- Clean code is self-commenting
+
+// Dirty
+const fetchUser = (id) => (
+  fetch(buildUri`/users/${id}`) // Get User DTO record from REST API
+    .then(convertFormat) // Convert to snakeCase
+    .then(validateUser) // Make sure the the user is valid
+);
+
+// Clean
+const fetchUser = (id) => (
+  fetch(buildUri`/users/${id}`)
+    .then(snakeToCamelCase)
+    .then(validateUser)
+);
+
+---------------------------------------------------------------------------------
+
+- Boolean variables, or functions that return a boolean value, should start with “is,” “has” or “should.”
+
+// Dirty
+const done = current >= goal;
+
+// Clean
+const isComplete = current >= goal;
+
+-------------------------------------------------------------------------------
+
+- Functions should be named for what they do, not how they do it.
+
+// Dirty
+const loadConfigFromServer = () => {
+  ...
+};
+// Clean
+const loadConfig = () => {
+  ...
+};
+
+-------------------------------------------------------------------------------
+
+- Default values
+
+// Dirty
+const Icon = ({ className, onClick }) => {
+  const additionalClasses = className || 'icon-large';
+  return (
+    <span
+      className={`icon-hover ${additionalClasses}`}
+      onClick={onClick}>
+    </span>
+  );
+};
+
+// Clean
+const Icon = ({ className = 'icon-large', onClick }) => (
+  <span className={`icon-hover ${className}`} onClick={onClick} />
+);
+
+// Cleaner
+const Icon = ({ className, onClick }) => (
+  <span className={`icon-hover ${className}`} onClick={onClick} />
+);
+Icon.defaultProps = {
+  className: 'icon-large',
+};
+
+------------------------------------------------------------------------------------
+
+// Dirty
+import Title from './Title';
+export const Thingie = ({ description }) => (
+  <div class="thingie">
+    <div class="description-wrapper">
+      <Description value={description} />
+    </div>
+  </div>
+);
+export const ThingieWithTitle = ({ title, description }) => (
+  <div>
+    <Title value={title} />
+    <div class="description-wrapper">
+      <Description value={description} />
+    </div>
+  </div>
+);
+
+// Clean
+import Title from './Title';
+export const Thingie = ({ description, children }) => (
+  <div class="thingie">
+    {children}
+    <div class="description-wrapper">
+      <Description value={description} />
+    </div>
+  </div>
+);
+export const ThingieWithTitle = ({ title, ...others }) => (
+  <Thingie {...others}>
+    <Title value={title} />
+  </Thingie>
+);
+
+---------------------------------------------------------------------------------------
+
+// Dirty
+class TableRowWrapper extends Component {
+  render() {
+    return (
+      <tr>
+        {this.props.children}
+      </tr>
+    );
+  }
+}
+
+// Clean
+const TableRowWrapper = ({ children }) => (
+  <tr>
+    {children}
+  </tr>
+);
+
+---------------------------------------------------------------------------------------
+
+- OBJECT DESTRUCTURING
+
+// Dirty
+componentWillReceiveProps(newProps) {
+  this.setState({
+    active: newProps.active
+  });
+}
+
+// Clean
+componentWillReceiveProps({ active }) {
+  this.setState({ active });
+}
+
+---------------------------------------------------------------------------------------
+
+- ARRAY DESTRUCTURING
+
+// Dirty
+const splitLocale = locale.split('-');
+const language = splitLocale[0];
+const country = splitLocale[1];
+
+// Clean
+const [language, country] = locale.split('-');
+
+
+------------------------------------------------------------------------------------------
+
+- bind this
+
+Use Arrow Function in Render
+
+onChange={e => this.handleChange(e)}
+
+handleChange = () => {};
+
+-------------------------------------------------------------
+
+class LoggingButton extends React.Component {
+  // This syntax ensures `this` is bound within handleClick.
+  // Warning: this is *experimental* syntax.
+  handleClick = () => {
+    console.log('this is:', this);
+  }
+
+
+-----------------------------------------------------
+
+use this => const Button = ({ name, handleClick });
+instead this => const { name, handleClick } => props;
+
+---------------------------------------------
+
+create common toggle function like in ember fr
+
+--------------------------------------------
+
+- create new object
+
+   Register.create({name, password})
+
+   ->
+
+   const user = new User(name, password);
+   Register.create(user);
+
+-------------------------------------------------
+
+  static signUp(name, password, res) {
+    if (isEmpty(name) || isEmpty(password)) {
+      return res
+        .send({
+          status: false,
+          message: 'Password or name cannot be empty',
+        });
+    }
+
+->
+
+  static signUp = (name, password, res) => {
+    const dataEmpty = (isEmpty(name) || isEmpty(password));
+
+    if (dataEmpty) {
+      res.send(failure('Password or name cannot be empty'));
+      return;
+    }
+
+----------------------------------------------------------
+
+
+1. делать компоненты проце и по приницп единственной ответсвенности
+
+<Menu size="10px" colorItem="red"/>
+
+->
+
+<Menu>
+	<MenuItem colorItem="red">
+</Menu>
+
+-------------------------------------------------------------
+
+2.  компонент должен быть открыт для расширения,
+    это мы можем сделать расширив компонент другим компонентом,
+    тем самым мы не будем менять главный компонент
+
+- <Input value="456" addon=({<Logo />})/>

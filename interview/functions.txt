@@ -1,0 +1,65 @@
+ const csum = a => b => a + b
+sum(1)(2)
+
+csum(1)
+// b => 1 + b
+
+const plusOne = csum(1)
+plusOne(2)
+// 3
+
+----------------------------------------
+
+function Book(name, author) {
+    this.name = name;
+    this.author = author;
+    return this;
+}
+
+function Foo(obj, name, author) {
+    return obj.call({}, name, author);
+}
+
+const book = Foo(Book, 'js', 'petr');
+
+---------------------------------------
+
+ (function(){
+    console.log( typeof arguments );
+  })();
+
+--------------------------------------------------------------------------------
+
+(function() {
+	console.log('working');
+}());
+
+function() {
+	console.log('not working');
+}() //  Unexpected token (
+
+// because js see it like
+
+function() {
+	console.log('not working');
+}
+
+
+()
+
+// bit it will be work
+
+const some = function() {
+	console.log('some');
+}();
+
+---------------------------------------
+
+const arr = [];
+for (var i = 0; i < 100; i++) {
+	arr[i] = function() {
+  	console.log(i);
+  }
+}
+
+arr[18]();

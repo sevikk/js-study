@@ -1,0 +1,16 @@
+Content tag(!!! depraceted):
+
+content get from some element data by selector
+
+<div>
+  <h4>My Content Heading</h4>
+  <p>My content text</p>
+</div>
+
+  var myContent = document.querySelector('div');
+  // Create a shadow DOM on the <div>
+  var shadowroot = myContent.createShadowRoot();
+  // Insert into the shadow DOM a new heading and 
+  // part of the original content: the <p> tag.
+  shadowroot.innerHTML =
+    '<h2>Inserted Heading</h2> <content select="p"></content>';

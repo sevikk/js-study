@@ -1,0 +1,103 @@
+// how think js interpretation
+ -> when you use this construction 2.toString() -> js interpretation create new Streing for 2 and create new string object and then use method toString
+
+----------------------------------------------
+
+то что null это object это баг typeof null это null
+
+------------------------------------------
+
+console.log(0 == false);
+console.log('' == false);
+
+console.log(NaN == false); // false
+console.log({} == false); // false
+
+-------------------------------------------------------------------
+
+The Null type does not compare as equal to either 1 or +0 (in fact, null is only comparable to undefined in the AECA).
+
+console.log(null == false); // false
+console.log(null == true); // false
+
+
+
+null === null // true, cause null is not a object it`s primitive
+
+null  == undefined   // true
+
+-----------------------------------------------------------------------
+
+"use strict";
+
+a = undefined + null;
+console.log(a); // is not defined, because empty value
+
+------------------------------------------------------------------
+
+let x = 5;
+console.log( x++ ); // 5, because only after assign will be 6
+
+-------------------------------------------------------------------
+
+var y = 1, x = y = typeof x; // because on first ster typeof return undefined, and then x = undefined
+console.log(x); // undefined
+
+------------------------------------------------------------------------------------
+
+console.log([] + 1 + 2) // [] -> 0
+
+----------------------------------------------------
+
+Существует ли такое значение X, что после присваивания a = X вызов alert(a == X) выдаст false? Yes, it is NaN, {}
+
+let a = NaN;
+console.log( a == NaN ); // false
+
+---------------------------------------------------------------------
+
+let a = 1;
+let b = { toString() {return '1'} };
+let c = 1;
+
+console.log(a + b + c) // 111, из за toString, он переводит его в строку
+
+---------------------------------------------------------------
+
+console.log(+"Infinity"); // becuse transform to number
+
+-----------------------------------------------------------
+
+(() => {
+	var a = b = 100; 
+})();
+
+console.log(b); 100, beacuse b in global scope window.b
+console.log(a); // a is not defined
+
+-----------------------------------------------------------------
+
+console.log(2 + '2'); // 22, because string concatination
+console.log(2 - '2'); // 0 because -'2' convert to number
+
+------------------------------------------
+
+console.log(7 > 6 > 5); // false, because 7 > 6 - true, true > 5 (true is 1) 1 > 5 - false
+console.log(5 < 6 < 7); // true -> 1 < 7
+
+---------------------------------------------
+
+let:
+
+1. блочная область видимости
+2. нет всплытия
+3. При использовании в цикле, для каждой итерации создаётся своя переменная.
+
+------------------------------------------------
+
+let one = 1;
+let five = 5;
+let two, three, four;
+one = two = three = four = five;
+
+console.log(one); // 5, because interpretator read right to left

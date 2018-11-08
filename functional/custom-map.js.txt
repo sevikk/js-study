@@ -1,0 +1,44 @@
+/* default map */
+
+const array = [1, 2, 3];
+
+const result = array.map((item, index) => item * 2);
+
+console.log(result);
+
+/* default map realization */
+
+const array = [1, 2, 3];
+
+const customMap = (fn, array) => {
+	let newArray = [];
+  
+  for(let i = 0; i < array.length; i++) {
+  	const mapped = fn(array[i]);
+  	newArray.push(mapped);
+  } 
+  
+  return newArray;
+}
+
+const double = (item) =>
+	item * 2;
+
+const result = customMap(double, array);
+
+console.log(result);
+
+/* map with recursion */
+
+const array = [1, 2, 3];
+
+const customMap = (fn, [head, ...tail]) => (
+ head === undefined ? [] : [fn(head), ...customMap(fn, tail)]
+);
+
+const double = (item) =>
+	item * 2;
+
+const result = customMap(double, array);
+
+console.log(result);

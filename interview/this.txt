@@ -1,0 +1,46 @@
+so because setTimout is a window function, in setTimoiut bode this refef to window 
+
+window.setTimeout(() => console.log(1), 1000)
+
+----------------------------------------------
+
+f.call(null); // window, but why?
+
+function f() {
+  console.log(this);
+}
+
+----------------------------------------------------------------
+
+let name = "Вася";
+function sayHi() {
+  console.log(name);
+}
+
+setTimeout(function() {
+  let name = "Петя";
+  sayHi(); // Вася, because setTimeout from global scope
+}, 1000)
+
+------------------------------------------------------------------------------
+
+Переменная this
+
+1. Значение переменной this чаще всего определяется тем, как вызывается функция. 
+Когда функция вызывается как метод объекта, переменная this приобретает значение ссылки на объект.
+
+2. Тот же принцип применяется при вызове функции с оператором new, чтобы создать экземпляр объекта.
+
+3. Когда мы вызываем функцию как функцию (не как метод объекта), эта функция будет выполнена в глобальном контексте. Значением переменной this в данном случае будет ссылка на глобальный объект. Однако, если функция вызывается как функция в строгом режиме (strict mode) — значением this будет undefined.
+
+(function () {
+    console.log(this === window); // true
+})();
+
+------------------------
+
+when we set function as params to another function we lost the context (callbcak function get context from main function)
+
+-----------------------
+
+this in node module don`t equal global object, it this === module.exports

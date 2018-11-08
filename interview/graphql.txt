@@ -1,0 +1,3 @@
+1. Unlike REST applications, GraphQL implementations rely on a single endpoint.
+2. All GraphQL requests post data (always post, never get)
+3. GraphQL distinguishes between read operations as �queries� and write operations as �mutations.�

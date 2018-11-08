@@ -1,0 +1,8 @@
+web worker copy data, so we need only transfer it
+    -> myWorker.postMessage(values, [data]); // added sercond param to transfer data
+
+в веб воркекре нет window, вместо жтого там self
+cоздание веб воркера затратная операция
+браузер имеет ограничение на создание веб воркеров
+
+для синхронизации вкладок можно импользовать sharedworker    
